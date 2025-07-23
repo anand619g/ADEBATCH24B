@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "DF-Batch25"
+		},
+		"LS_BLOB_connectionString": {
+			"value": ""
+		},
+		"LS_DBS_accessToken": {
+			"value": ""
+		},
+		"LS_SQL_password": {
+			"value": ""
+		},
+		"LS_SQL_PARAM_password": {
+			"value": ""
+		},
+		"LS_DBS_properties_typeProperties_existingClusterId": {
+			"value": "0701-032422-rk51rjfy"
+		},
+		"LS_SQL_properties_typeProperties_server": {
+			"value": "sqlsrvrbatch25.database.windows.net"
+		},
+		"LS_SQL_properties_typeProperties_database": {
+			"value": "sqldbbatch25"
+		},
+		"LS_SQL_properties_typeProperties_userName": {
+			"value": "anand"
+		},
+		"LS_SQL_PARAM_properties_typeProperties_server": {
+			"value": "sqlsrvrbatch25.database.windows.net"
+		},
+		"LS_SQL_PARAM_properties_typeProperties_database": {
+			"value": "@{linkedService().db_Name}"
+		},
+		"LS_SQL_PARAM_properties_typeProperties_userName": {
+			"value": "anand"
+		},
+		"Tumbling_Trigger_properties_pipeline_parameters_windowStartTime": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"Tumbling_Trigger_properties_pipeline_parameters_WindowEndTime": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"eventbasedtrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/0ae3b042-0db6-4508-bcd2-301da8c0a7b4/resourceGroups/ADE_Batch25/providers/Microsoft.Storage/storageAccounts/adlsbatch25"
+		}
+	}
+}
