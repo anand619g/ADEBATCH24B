@@ -1,0 +1,32 @@
+{
+	"name": "System_Var",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "System_Value",
+					"value": {
+						"value": "@pipeline().DataFactory",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"System_Value": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-18T04:35:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

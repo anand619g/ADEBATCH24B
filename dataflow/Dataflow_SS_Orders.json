@@ -1,0 +1,102 @@
+{
+	"name": "Dataflow_SS_Orders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SS_Orders_input",
+						"type": "DatasetReference"
+					},
+					"name": "orders"
+				},
+				{
+					"dataset": {
+						"referenceName": "SS_Managers",
+						"type": "DatasetReference"
+					},
+					"name": "managers"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SS_Orders_output",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DF_FileName as string",
+				"}",
+				"source(output(",
+				"          {Row ID} as string,",
+				"          {Order ID} as string,",
+				"          {Order Date} as string,",
+				"          {Ship Date} as string,",
+				"          {Ship Mode} as string,",
+				"          {Customer ID} as string,",
+				"          {Customer Name} as string,",
+				"          Segment as string,",
+				"          {Country/Region} as string,",
+				"          City as string,",
+				"          {State/Province} as string,",
+				"          {Postal Code} as string,",
+				"          Region as string,",
+				"          {Product ID} as string,",
+				"          Category as string,",
+				"          Sub_Category as string,",
+				"          {Product Name} as string,",
+				"          Sales as integer,",
+				"          Quantity as string,",
+				"          Discount as string,",
+				"          Profit as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> orders",
+				"source(output(",
+				"          Region as string,",
+				"          ManagerName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> managers",
+				"join1 filter(Sub_Category == $DF_FileName) ~> filter1",
+				"filter1 aggregate(groupBy(Sub_Category,",
+				"          State = {State/Province}),",
+				"     Sales = sum(Sales)) ~> aggregate1",
+				"orders, managers join(orders@Region == managers@Region,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'right')~> join1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          emp_id as string,",
+				"          Name as string,",
+				"          Salary as string,",
+				"          department_name as string,",
+				"          country_id as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

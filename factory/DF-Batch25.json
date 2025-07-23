@@ -1,0 +1,14 @@
+{
+	"name": "DF-Batch25",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "true"
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "899bb22f-6688-4b2c-aa14-fc4b1cf51e06",
+		"tenantId": "8a3fe668-cdcc-43fa-8db8-fb2b250e70c2"
+	}
+}

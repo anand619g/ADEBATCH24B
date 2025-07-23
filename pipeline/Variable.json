@@ -1,0 +1,32 @@
+{
+	"name": "Variable",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Test_Variable",
+					"value": {
+						"value": "@addMinutes(addHours(utcNow(),5 ),30 )",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Test_Variable": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-18T04:35:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

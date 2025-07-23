@@ -1,0 +1,41 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Notebook1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/anand@bethathirupathinaidugmail.onmicrosoft.com/ADF_Parameters",
+					"baseParameters": {
+						"File_Name": {
+							"value": "@pipeline().parameters.File_Name_Param",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_DBS",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"File_Name_Param": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-07T04:45:40Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

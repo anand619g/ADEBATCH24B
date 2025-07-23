@@ -1,0 +1,89 @@
+{
+	"name": "COPY_TUMBLING_PIPELINE",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[TUMBLING_WINDOW_PROC]",
+						"storedProcedureParameters": {
+							"ENDDATE": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.WindowEndTime",
+									"type": "Expression"
+								}
+							},
+							"STARTDATE": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Dynamic_Tbl",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl_Name": "CUST_SOURCE",
+							"sch_Name": "DBO"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Dynamic_Tbl",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl_Name": "Tumbling_Cust",
+							"sch_Name": "DBO"
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"windowStartTime": {
+				"type": "string"
+			},
+			"WindowEndTime": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-16T05:19:54Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

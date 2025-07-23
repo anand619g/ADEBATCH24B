@@ -1,0 +1,39 @@
+{
+	"name": "For_Each_Test",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.List",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"List": {
+				"type": "array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-14T05:18:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

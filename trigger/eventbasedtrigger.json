@@ -1,0 +1,24 @@
+{
+	"name": "eventbasedtrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "eventbased_PIPELINE",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/eventbasedtrigger/blobs/input",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/0ae3b042-0db6-4508-bcd2-301da8c0a7b4/resourceGroups/ADE_Batch25/providers/Microsoft.Storage/storageAccounts/adlsbatch25",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

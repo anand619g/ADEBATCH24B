@@ -1,0 +1,90 @@
+{
+	"name": "Main_Pipeline_Orders",
+	"properties": {
+		"activities": [
+			{
+				"name": "Main_Pipeline_ForEach",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.SubCategoryList",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 4,
+					"activities": [
+						{
+							"name": "Data flow_SS_Orders",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "Dataflow_SS_Orders",
+									"type": "DataFlowReference",
+									"parameters": {
+										"DF_FileName": {
+											"value": "'@{item()}'",
+											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"sink1": {
+											"DS_FileName": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								"integrationRuntime": {
+									"referenceName": "IR-Azure",
+									"type": "IntegrationRuntimeReference"
+								},
+								"traceLevel": "Fine"
+							}
+						},
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "Data flow_SS_Orders",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 180
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"SubCategoryList": {
+				"type": "array"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-13T12:08:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,105 @@
+{
+	"name": "IF_ACTIVITY2_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Input_lookup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(TrxnDate) as Input_Table_Date from DBO.IfTable_input",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Dynamic_Tbl",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl_Name": "IfTable_input",
+							"sch_Name": "DBO"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Output_Lookup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(TrxnDate) as Output_Table_Date from DBO.IfTable_output",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Dynamic_Tbl",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl_Name": "IfTable_output",
+							"sch_Name": "dbo"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Input_lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Output_Lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Test_Date",
+					"value": {
+						"value": "@greater(\n    activity('Input_lookup').output.firstRow.Input_Table_Date,\n    activity('Output_Lookup').output.firstRow.Output_Table_Date\n    \n        )",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Test_Date": {
+				"type": "Boolean"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-18T05:19:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

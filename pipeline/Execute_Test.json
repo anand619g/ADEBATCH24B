@@ -1,0 +1,26 @@
+{
+	"name": "Execute_Test",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SWITCH ACTIVITY",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-07-17T04:17:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

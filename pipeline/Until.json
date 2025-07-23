@@ -1,0 +1,122 @@
+{
+	"name": "Until",
+	"properties": {
+		"activities": [
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(\n    activity('Get Metadata1').output.exists,\n    greaterOrEquals(variables('iterationcount'),3 )\n   )",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						},
+						{
+							"name": "Get Metadata1",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "emp_sal_csv",
+									"type": "DatasetReference"
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "temp_iterationcount",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "tempiterationcount",
+								"value": {
+									"value": "@add(variables('iterationcount'),1)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "iterationcount",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "temp_iterationcount",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "iterationcount",
+								"value": {
+									"value": "@variables('tempiterationcount')",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			}
+		],
+		"variables": {
+			"iterationcount": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"tempiterationcount": {
+				"type": "Integer",
+				"defaultValue": 0
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-18T05:19:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
